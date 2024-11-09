@@ -34,7 +34,7 @@ Trade-Agent/
 
 ### Prerequisites
 
-- **Python 3.8** or higher
+- **Python 3.10.9**
 - Packages listed in `requirements.txt`
 - **Docker**, **AWS CLI**, and **kubectl** installed for deployment
 
@@ -50,14 +50,14 @@ pip install -r requirements.txt
 
 2. **Train Agent Configurations**:
    Run the training script to initiate training for each stock. Each agent configuration will be evaluated for prediction quality.
-   
+
    ```bash
    python src/train.py --stock-symbol AAPL --agent-count 10
    ```
 
 3. **Evaluate Configurations**:
    Use the evaluation script to rank agents and select only the top configurations for deployment.
-   
+
    ```bash
    python src/evaluate.py --stock-symbol AAPL
    ```
@@ -72,18 +72,21 @@ pip install -r requirements.txt
 To containerize and deploy Trade Agent configurations locally or in a cloud environment:
 
 1. **Build the Docker Image**:
+
    ```bash
    docker build -t trade-agent:latest -f docker/Dockerfile .
    ```
 
 2. **Run a Docker Container**:
    Run the container with a specific stock agent configuration.
+
    ```bash
    docker run -d --name trade_agent -e STOCK_SYMBOL=AAPL trade-agent:latest
    ```
 
 3. **Scale with Docker Compose**:
    If running multiple agents simultaneously, use `docker-compose.yml` for multi-container deployment:
+
    ```bash
    docker-compose -f docker/docker-compose.yml up -d
    ```
@@ -101,14 +104,14 @@ For large-scale, distributed deployment, Trade Agent can be orchestrated using K
 
 2. **Scaling Pods**:
    To run multiple agents for the same or different stocks, configure `replicas` in the `deployment.yaml` or scale the deployment on the fly:
-   
+
    ```bash
    kubectl scale deployment trade-agent --replicas=10
    ```
 
 3. **Monitoring and Logging**:
    Use `kubectl logs` to view real-time logs of individual agent pods.
-   
+
    ```bash
    kubectl logs -f <pod-name>
    ```
@@ -122,6 +125,7 @@ To deploy agents on AWS infrastructure, the repository includes CloudFormation t
 
 2. **Using ECS for Container Deployment**:
    - **Build and Push to ECR**: First, create an Elastic Container Registry (ECR) repository and push the Docker image:
+
      ```bash
      aws ecr create-repository --repository-name trade-agent
      docker tag trade-agent:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/trade-agent:latest
@@ -129,7 +133,7 @@ To deploy agents on AWS infrastructure, the repository includes CloudFormation t
      ```
 
    - **Deploy to ECS**: Use ECS to run and manage Docker containers at scale. Use `aws/ecs-task-definition.json` to define task parameters.
-   
+
      ```bash
      aws ecs register-task-definition --cli-input-json file://aws/ecs-task-definition.json
      aws ecs run-task --cluster <cluster-name> --task-definition trade-agent
@@ -152,4 +156,4 @@ This project is licensed under the MIT License.
 
 ## Contact
 
-For questions, suggestions, or collaboration requests, please reach out to the **Open Agents Organization**.
+For questions, suggestions, or collaboration requests, please reach out to the **Open Agents**.
