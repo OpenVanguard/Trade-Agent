@@ -1,0 +1,6 @@
+pandas
+numpy
+yfinance
+matplotlib
+awscli  # optional, for AWS integrations
+boto3   # optional, for AWS S3 or other services
