@@ -84,6 +84,17 @@ To containerize and deploy Trade Agent configurations locally or in a cloud envi
    docker run -d --name trade_agent -e STOCK_SYMBOL=AAPL trade-agent:latest
    ```
 
+3. **Build and Run the Docker Container Locally(additional)**:
+In the terminal, navigate to the directory containing your Dockerfile and run:
+
+   ```bash
+   # Build the Docker image
+   docker build -t stock-agent .
+
+   # Run the Docker container
+   docker run -d stock-agent
+   ```
+
 3. **Scale with Docker Compose**:
    If running multiple agents simultaneously, use `docker-compose.yml` for multi-container deployment:
 
