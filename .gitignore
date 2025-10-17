@@ -66,8 +66,8 @@ secrets.json
 
 # Model artifacts (optional - comment out if you want to track models)
 # models/
-# *.pth
-# *.pkl
+*.pth
+*.pkl
 
 # Data (optional - comment out if you want to track data)
 # data/*.csv

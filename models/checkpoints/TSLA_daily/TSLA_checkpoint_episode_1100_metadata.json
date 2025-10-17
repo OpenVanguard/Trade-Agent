@@ -1,0 +1,10 @@
+{
+  "symbol": "TSLA",
+  "episode": 1100,
+  "timestamp": "2025-08-10T10:50:51.584774",
+  "state_dim": 59,
+  "action_dim": 3,
+  "epsilon": 0.009998671593271896,
+  "total_experiences": 40000,
+  "average_loss": 0.9753255605697632
+}
