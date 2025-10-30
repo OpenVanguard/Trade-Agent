@@ -1,170 +1,99 @@
-# Trade Agent
+# Trade-Agent
 
-## Overview
+Trade-Agent is a project that applies Deep Q-Learning (DQN), a reinforcement learning technique, to predict and analyze stock prices using various sources of stock market data.
 
-**Trade Agent** is a repository of AI agent configurations designed for scalable deployment across multiple stocks. Developed by the **Open Agents Organization**, these configurations leverage temporal stock data to optimize predictive accuracy for each stock. Built with scalability in mind, the repository allows for deploying and managing thousands of agent configurations on cloud platforms and container orchestration systems like AWS, Kubernetes, and Docker.
+## Features
 
-## Key Features
+- **Deep Q-Learning Model:** Utilizes DQN for stock price prediction and trading strategy optimization.
+- **Multiple Data Sources:** Supports data acquisition from Yahoo Finance, Alpha Vantage, Quandl, and more.
+- **Technical Indicators:** Integrates TA-Lib, pandas-ta, and other libraries for feature engineering.
+- **Visualization:** Provides data visualization using Matplotlib, Seaborn, and Plotly.
+- **Modular Design:** Easily extendable for new data sources and RL algorithms.
 
-- **Extensive Agent Pool**: Each stock is analyzed by multiple agent configurations, enabling high predictive accuracy through top-performing agents. For example, 10 agents may be trained on data for Apple, and only the best are retained.
+### Model Architure
+```
+==========================================================================================
+Layer (type:depth-idx)                   Output Shape              Param #
+==========================================================================================
+Sequential                               [1, 3]                    --
+├─Linear: 1-1                            [1, 1024]                 61,440
+├─LayerNorm: 1-2                         [1, 1024]                 2,048
+├─ReLU: 1-3                              [1, 1024]                 --
+├─Dropout: 1-4                           [1, 1024]                 --
+├─Linear: 1-5                            [1, 512]                  524,800
+├─LayerNorm: 1-6                         [1, 512]                  1,024
+├─ReLU: 1-7                              [1, 512]                  --
+├─Dropout: 1-8                           [1, 512]                  --
+├─Linear: 1-9                            [1, 256]                  131,328
+├─LayerNorm: 1-10                        [1, 256]                  512
+├─ReLU: 1-11                             [1, 256]                  --
+├─Dropout: 1-12                          [1, 256]                  --
+├─Linear: 1-13                           [1, 128]                  32,896
+├─LayerNorm: 1-14                        [1, 128]                  256
+├─ReLU: 1-15                             [1, 128]                  --
+├─Dropout: 1-16                          [1, 128]                  --
+├─Linear: 1-17                           [1, 64]                   8,256
+├─ReLU: 1-18                             [1, 64]                   --
+├─Linear: 1-19                           [1, 3]                    195
+==========================================================================================
+Total params: 762,755
+Trainable params: 762,755
+Non-trainable params: 0
+Total mult-adds (M): 0.76
+==========================================================================================
+Input size (MB): 0.00
+Forward/backward pass size (MB): 0.03
+Params size (MB): 3.05
+Estimated Total Size (MB): 3.08
+==========================================================================================
+```
+## Installation
 
-- **Massive Deployment Capability**: Trade Agent configurations are built to run at scale, with thousands of agents deployed in parallel across stocks to optimize prediction.
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/OpenVanguard/Trade-Agent.git
+    cd Trade-Agent
+    ```
+2. Set up the Python environment (recommended: use `stock_rl_env`):
+    ```sh
+    python -m venv stock_rl_env
+    source stock_rl_env/Scripts/activate  # On Windows
+    # Or
+    source stock_rl_env/bin/activate      # On Linux/Mac
+    ```
+3. Install dependencies:
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-- **Adaptive and Profitable Prediction**: Agents automatically adapt to new data, ensuring predictions are continually refined to provide maximum potential accuracy.
+## Usage
+- Refer [src/README.md](src/README.md).
+OR
+- Run the main script:
+    ```sh
+    python src/main.py
+    ```
+- Explore data analysis and experiments in [notebooks/dataAnalysis.ipynb](notebooks/dataAnalysis.ipynb).
 
 ## Project Structure
 
-```plaintext
-Trade-Agent/
-├── data/                # Temporal stock data for agent training
-├── agents/              # Configuration files for each agent
-├── models/              # Trained models for various configurations
-├── src/                 # Core code for training, testing, and evaluation
-│   ├── train.py         # Script to train agent configurations on stock data
-│   ├── evaluate.py      # Script to evaluate and rank agents
-│   ├── deploy.py        # Script for large-scale agent deployment
-├── docker/              # Docker configuration files
-├── kubernetes/          # Kubernetes deployment manifests
-├── aws/                 # AWS setup scripts and configuration
-├── README.md            # Project description and usage guide
-└── requirements.txt     # Required packages
-```
+- `src/`: Main source code for RL environment and training.
+- `data/`: Storage for raw and processed stock data.
+- `notebooks/`: Jupyter notebooks for exploratory analysis.
+- `stock_rl_env/`: Python virtual environment.
 
-## Getting Started
+## Requirements
 
-### Prerequisites
-
-- **Python 3.10.9**
-- Packages listed in `requirements.txt`
-- **Docker**, **AWS CLI**, and **kubectl** installed for deployment
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-### Setting Up Your Environment
-
-1. **Prepare Stock Data**: Gather historical stock data and place it in the `data/` directory.
-
-2. **Train Agent Configurations**:
-   Run the training script to initiate training for each stock. Each agent configuration will be evaluated for prediction quality.
-
-   ```bash
-   python src/train.py --stock-symbol AAPL --agent-count 10
-   ```
-
-3. **Evaluate Configurations**:
-   Use the evaluation script to rank agents and select only the top configurations for deployment.
-
-   ```bash
-   python src/evaluate.py --stock-symbol AAPL
-   ```
-
-4. **Deploy at Scale**:
-   Choose from deployment options below (AWS, Kubernetes, Docker) to deploy agents at scale.
-
-## Deployment Guide
-
-### 1. Docker Deployment
-
-To containerize and deploy Trade Agent configurations locally or in a cloud environment:
-
-1. **Build the Docker Image**:
-
-   ```bash
-   docker build -t trade-agent:latest -f docker/Dockerfile .
-   ```
-
-2. **Run a Docker Container**:
-   Run the container with a specific stock agent configuration.
-
-   ```bash
-   docker run -d --name trade_agent -e STOCK_SYMBOL=AAPL trade-agent:latest
-   ```
-
-3. **Build and Run the Docker Container Locally(additional)**:
-In the terminal, navigate to the directory containing your Dockerfile and run:
-
-   ```bash
-   # Build the Docker image
-   docker build -t stock-agent .
-
-   # Run the Docker container
-   docker run -d stock-agent
-   ```
-
-3. **Scale with Docker Compose**:
-   If running multiple agents simultaneously, use `docker-compose.yml` for multi-container deployment:
-
-   ```bash
-   docker-compose -f docker/docker-compose.yml up -d
-   ```
-
-### 2. Kubernetes Deployment
-
-For large-scale, distributed deployment, Trade Agent can be orchestrated using Kubernetes:
-
-1. **Deploying on Kubernetes**:
-   Use the provided Kubernetes manifests to deploy agents as pods.
-
-   ```bash
-   kubectl apply -f kubernetes/deployment.yaml
-   ```
-
-2. **Scaling Pods**:
-   To run multiple agents for the same or different stocks, configure `replicas` in the `deployment.yaml` or scale the deployment on the fly:
-
-   ```bash
-   kubectl scale deployment trade-agent --replicas=10
-   ```
-
-3. **Monitoring and Logging**:
-   Use `kubectl logs` to view real-time logs of individual agent pods.
-
-   ```bash
-   kubectl logs -f <pod-name>
-   ```
-
-### 3. AWS Deployment
-
-To deploy agents on AWS infrastructure, the repository includes CloudFormation templates and sample scripts:
-
-1. **Setting up an EC2 Instance**:
-   Use the AWS CLI or console to set up an EC2 instance with Docker and Docker Compose pre-installed.
-
-2. **Using ECS for Container Deployment**:
-   - **Build and Push to ECR**: First, create an Elastic Container Registry (ECR) repository and push the Docker image:
-
-     ```bash
-     aws ecr create-repository --repository-name trade-agent
-     docker tag trade-agent:latest <aws_account_id>.dkr.ecr.<region>.amazonaws.com/trade-agent:latest
-     docker push <aws_account_id>.dkr.ecr.<region>.amazonaws.com/trade-agent:latest
-     ```
-
-   - **Deploy to ECS**: Use ECS to run and manage Docker containers at scale. Use `aws/ecs-task-definition.json` to define task parameters.
-
-     ```bash
-     aws ecs register-task-definition --cli-input-json file://aws/ecs-task-definition.json
-     aws ecs run-task --cluster <cluster-name> --task-definition trade-agent
-     ```
-
-3. **Auto-Scaling with AWS Lambda and CloudWatch**:
-   Set up auto-scaling policies on ECS based on CPU/memory metrics, using CloudWatch alarms and Lambda functions to dynamically scale up or down based on load.
-
-## Emphasis on Scale and Adaptability
-
-Trade Agent is designed for large-scale deployment, supporting thousands of agent configurations operating in parallel across multiple stocks. By deploying on Docker, Kubernetes, or AWS, the repository provides flexible deployment options for small-scale testing to full production environments, enabling rapid identification of optimal agents for stock prediction.
-
-## Contributions
-
-The **Open Agents Organization** welcomes community contributions! Improvements, bug fixes, and suggestions for enhancing the scalability and predictive accuracy of Trade Agent configurations are encouraged.
+- Python 3.10+
+- PyTorch
+- Stable Baselines3
+- Gym
+- yfinance, pandas_datareader, alpha_vantage, quandl, investpy
+- TA-Lib, pandas-ta, scikit-learn, matplotlib, seaborn, plotly
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
 
-## Contact
-
-For questions, suggestions, or collaboration requests, please reach out to the **Open Agents**.
+## Author
+Virat Srivastava
