@@ -1,0 +1,24 @@
+# Use an official Python runtime as the base image
+FROM python:3.10-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt /app/requirements.txt
+
+# Install dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application code into the container
+COPY . /app
+
+# Set environment variables (if needed, such as AWS credentials or API keys)
+# ENV AWS_ACCESS_KEY_ID=<YOUR_AWS_ACCESS_KEY>
+# ENV AWS_SECRET_ACCESS_KEY=<YOUR_AWS_SECRET_KEY>
+
+# Expose a port (optional, based on whether the app needs to listen for requests)
+# EXPOSE 5000
+
+# Command to run the main script
+CMD ["python", "src/main.py"]
