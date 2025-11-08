@@ -20,5 +20,5 @@ COPY . /app
 # Expose a port (optional, based on whether the app needs to listen for requests)
 # EXPOSE 5000
 
-# Command to run the trading agent script
-CMD ["python", "run_agent.py"]
+# Command to run the main trading agent script
+CMD ["python", "src/main.py"]
