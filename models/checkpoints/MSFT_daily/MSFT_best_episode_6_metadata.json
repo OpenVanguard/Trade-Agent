@@ -1,0 +1,10 @@
+{
+  "symbol": "MSFT",
+  "episode": 6,
+  "timestamp": "2025-08-09T07:11:02.330355",
+  "state_dim": 59,
+  "action_dim": 3,
+  "epsilon": 0.009998671593271896,
+  "total_experiences": 18641,
+  "average_loss": 1.2449263259768486
+}
