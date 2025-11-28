@@ -1,0 +1,10 @@
+{
+  "symbol": "GOOGL",
+  "episode": 300,
+  "timestamp": "2025-08-09T15:06:31.129344",
+  "state_dim": 59,
+  "action_dim": 3,
+  "epsilon": 0.009998671593271896,
+  "total_experiences": 40000,
+  "average_loss": 0.4803156480193138
+}
