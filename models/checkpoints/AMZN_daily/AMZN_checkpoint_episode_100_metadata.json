@@ -1,0 +1,10 @@
+{
+  "symbol": "AMZN",
+  "episode": 100,
+  "timestamp": "2025-08-07T04:21:08.170348",
+  "state_dim": 59,
+  "action_dim": 3,
+  "epsilon": 0.009998671593271896,
+  "total_experiences": 40000,
+  "average_loss": 0.8295145780593157
+}
