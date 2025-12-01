@@ -1,0 +1,42 @@
+{
+  "symbol": "TSLA",
+  "model_used": "Best model for TSLA",
+  "model_path": "auto-selected",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "test_start_date": "2023-06-22",
+  "test_end_date": "2025-08-06",
+  "initial_balance": 10000,
+  "final_balance": 13958.817101041774,
+  "total_return": 0.3958817101041774,
+  "total_return_pct": 39.58817101041774,
+  "annualized_return": 0.17080285776211102,
+  "annualized_return_pct": 17.080285776211102,
+  "total_reward": 81.22950617253045,
+  "avg_reward_per_step": 0.15268704167768882,
+  "total_trades": 12,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0.0,
+  "win_rate_pct": 0.0,
+  "max_drawdown": 0.982615395010949,
+  "max_drawdown_pct": 98.2615395010949,
+  "sharpe_ratio": 0.8158451495545842,
+  "volatility": 0.3113205589772372,
+  "volatility_pct": 31.13205589772372,
+  "actions_distribution": {
+    "HOLD": 0,
+    "BUY": 532,
+    "SELL": 0
+  },
+  "actions_distribution_pct": {
+    "HOLD": 0.0,
+    "BUY": 100.0,
+    "SELL": 0.0
+  },
+  "total_steps": 532,
+  "avg_portfolio_value": 9770.272218093984,
+  "min_portfolio_value": 220.26535619117954,
+  "max_portfolio_value": 28292.000502156065,
+  "timestamp": "2025-08-11T02:39:20.175470"
+}

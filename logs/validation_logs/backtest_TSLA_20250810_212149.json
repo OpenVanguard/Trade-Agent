@@ -1,0 +1,22 @@
+{
+  "symbol": "TSLA",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "initial_balance": 10000,
+  "final_balance": 13958.817101041774,
+  "total_return": 0.3958817101041774,
+  "total_reward": 81.22950617253045,
+  "total_trades": 12,
+  "winning_trades": 0,
+  "win_rate": 0.0,
+  "max_drawdown": 0.982615395010949,
+  "sharpe_ratio": 0.8158451495545842,
+  "volatility": 0.3113205589772372,
+  "actions_distribution": {
+    "HOLD": 0,
+    "BUY": 532,
+    "SELL": 0
+  },
+  "total_steps": 532,
+  "timestamp": "2025-08-10T21:21:49.957630"
+}
