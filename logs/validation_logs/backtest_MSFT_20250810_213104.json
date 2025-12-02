@@ -1,0 +1,22 @@
+{
+  "symbol": "MSFT",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "initial_balance": 10000,
+  "final_balance": 10000.0,
+  "total_return": 0.0,
+  "total_reward": 0.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "win_rate": 0.0,
+  "max_drawdown": 0,
+  "sharpe_ratio": -9.296285203407621e+16,
+  "volatility": 0.0,
+  "actions_distribution": {
+    "HOLD": 532,
+    "BUY": 0,
+    "SELL": 0
+  },
+  "total_steps": 532,
+  "timestamp": "2025-08-10T21:31:04.667704"
+}

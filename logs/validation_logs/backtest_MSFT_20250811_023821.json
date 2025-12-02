@@ -1,0 +1,42 @@
+{
+  "symbol": "MSFT",
+  "model_used": "Best model for MSFT",
+  "model_path": "auto-selected",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "test_start_date": "2023-06-22",
+  "test_end_date": "2025-08-06",
+  "initial_balance": 10000,
+  "final_balance": 10000.0,
+  "total_return": 0.0,
+  "total_return_pct": 0.0,
+  "annualized_return": 0.0,
+  "annualized_return_pct": 0.0,
+  "total_reward": 0.0,
+  "avg_reward_per_step": 0.0,
+  "total_trades": 0,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0.0,
+  "win_rate_pct": 0.0,
+  "max_drawdown": 0,
+  "max_drawdown_pct": 0,
+  "sharpe_ratio": -9.296285203407621e+16,
+  "volatility": 0.0,
+  "volatility_pct": 0.0,
+  "actions_distribution": {
+    "HOLD": 532,
+    "BUY": 0,
+    "SELL": 0
+  },
+  "actions_distribution_pct": {
+    "HOLD": 100.0,
+    "BUY": 0.0,
+    "SELL": 0.0
+  },
+  "total_steps": 532,
+  "avg_portfolio_value": 10000.0,
+  "min_portfolio_value": 10000.0,
+  "max_portfolio_value": 10000.0,
+  "timestamp": "2025-08-11T02:38:21.208872"
+}

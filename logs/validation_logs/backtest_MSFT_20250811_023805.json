@@ -1,0 +1,42 @@
+{
+  "symbol": "MSFT",
+  "model_used": "Custom model: MSFT_final_episode_1500.pth",
+  "model_path": "models/MSFT_final_episode_1500.pth",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "test_start_date": "2023-06-22",
+  "test_end_date": "2025-08-06",
+  "initial_balance": 10000,
+  "final_balance": 231171.56305312447,
+  "total_return": 22.117156305312445,
+  "total_return_pct": 2211.7156305312446,
+  "annualized_return": 3.4143020568631934,
+  "annualized_return_pct": 341.43020568631937,
+  "total_reward": 56.49350504560657,
+  "avg_reward_per_step": 0.10619079895790709,
+  "total_trades": 7,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0.0,
+  "win_rate_pct": 0.0,
+  "max_drawdown": 0.6920592559455462,
+  "max_drawdown_pct": 69.20592559455461,
+  "sharpe_ratio": 1.6092914959137354,
+  "volatility": 0.0970137930424506,
+  "volatility_pct": 9.70137930424506,
+  "actions_distribution": {
+    "HOLD": 525,
+    "BUY": 7,
+    "SELL": 0
+  },
+  "actions_distribution_pct": {
+    "HOLD": 98.68421052631578,
+    "BUY": 1.3157894736842104,
+    "SELL": 0.0
+  },
+  "total_steps": 532,
+  "avg_portfolio_value": 99435.0047049905,
+  "min_portfolio_value": 5135.133496473423,
+  "max_portfolio_value": 239364.60599103523,
+  "timestamp": "2025-08-11T02:38:05.151626"
+}
