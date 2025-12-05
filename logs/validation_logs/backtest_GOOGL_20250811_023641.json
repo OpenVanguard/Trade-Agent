@@ -1,0 +1,42 @@
+{
+  "symbol": "GOOGL",
+  "model_used": "Best model for GOOGL",
+  "model_path": "auto-selected",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "test_start_date": "2023-06-22",
+  "test_end_date": "2025-08-06",
+  "initial_balance": 10000,
+  "final_balance": 244688.8572905975,
+  "total_return": 23.46888572905975,
+  "total_return_pct": 2346.888572905975,
+  "annualized_return": 3.5345118134679643,
+  "annualized_return_pct": 353.45118134679643,
+  "total_reward": 92.03282529613226,
+  "avg_reward_per_step": 0.1729940325115268,
+  "total_trades": 11,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0.0,
+  "win_rate_pct": 0.0,
+  "max_drawdown": 0.8661816034306303,
+  "max_drawdown_pct": 86.61816034306304,
+  "sharpe_ratio": 1.4860863847032824,
+  "volatility": 0.18944594662462017,
+  "volatility_pct": 18.944594662462016,
+  "actions_distribution": {
+    "HOLD": 0,
+    "BUY": 532,
+    "SELL": 0
+  },
+  "actions_distribution_pct": {
+    "HOLD": 0.0,
+    "BUY": 100.0,
+    "SELL": 0.0
+  },
+  "total_steps": 532,
+  "avg_portfolio_value": 131122.5931625851,
+  "min_portfolio_value": 2126.7847772403334,
+  "max_portfolio_value": 279489.0022710973,
+  "timestamp": "2025-08-11T02:36:41.121081"
+}

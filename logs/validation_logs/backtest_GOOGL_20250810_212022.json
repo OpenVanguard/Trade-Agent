@@ -1,0 +1,22 @@
+{
+  "symbol": "GOOGL",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "initial_balance": 10000,
+  "final_balance": 244688.8572905975,
+  "total_return": 23.46888572905975,
+  "total_reward": 92.03282529613226,
+  "total_trades": 11,
+  "winning_trades": 0,
+  "win_rate": 0.0,
+  "max_drawdown": 0.8661816034306303,
+  "sharpe_ratio": 1.4860863847032824,
+  "volatility": 0.18944594662462017,
+  "actions_distribution": {
+    "HOLD": 0,
+    "BUY": 532,
+    "SELL": 0
+  },
+  "total_steps": 532,
+  "timestamp": "2025-08-10T21:20:22.876051"
+}
