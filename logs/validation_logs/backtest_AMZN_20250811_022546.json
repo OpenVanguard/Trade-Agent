@@ -1,0 +1,42 @@
+{
+  "symbol": "AMZN",
+  "model_used": "Best model for AMZN",
+  "model_path": "auto-selected",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "test_start_date": "2023-06-22",
+  "test_end_date": "2025-08-06",
+  "initial_balance": 10000,
+  "final_balance": 99027.01636230778,
+  "total_return": 8.902701636230779,
+  "total_return_pct": 890.2701636230779,
+  "annualized_return": 1.9565679376201008,
+  "annualized_return_pct": 195.6567937620101,
+  "total_reward": 80.76013922073325,
+  "avg_reward_per_step": 0.1518047729713031,
+  "total_trades": 11,
+  "winning_trades": 0,
+  "losing_trades": 0,
+  "win_rate": 0.0,
+  "win_rate_pct": 0.0,
+  "max_drawdown": 0.9280058226717043,
+  "max_drawdown_pct": 92.80058226717043,
+  "sharpe_ratio": 1.251056264674563,
+  "volatility": 0.1887315233814766,
+  "volatility_pct": 18.873152338147662,
+  "actions_distribution": {
+    "HOLD": 357,
+    "BUY": 175,
+    "SELL": 0
+  },
+  "actions_distribution_pct": {
+    "HOLD": 67.10526315789474,
+    "BUY": 32.89473684210527,
+    "SELL": 0.0
+  },
+  "total_steps": 532,
+  "avg_portfolio_value": 63248.50032403078,
+  "min_portfolio_value": 1913.6673047021054,
+  "max_portfolio_value": 128794.00051734621,
+  "timestamp": "2025-08-11T02:25:46.001166"
+}

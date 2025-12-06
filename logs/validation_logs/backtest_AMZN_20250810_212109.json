@@ -1,0 +1,22 @@
+{
+  "symbol": "AMZN",
+  "test_split": 0.2,
+  "test_period_days": 533,
+  "initial_balance": 10000,
+  "final_balance": 99158.50025691606,
+  "total_return": 8.915850025691606,
+  "total_reward": 80.80346964525835,
+  "total_trades": 11,
+  "winning_trades": 0,
+  "win_rate": 0.0,
+  "max_drawdown": 0.928005111254272,
+  "sharpe_ratio": 1.2512699099028586,
+  "volatility": 0.18873114806247618,
+  "actions_distribution": {
+    "HOLD": 360,
+    "BUY": 172,
+    "SELL": 0
+  },
+  "total_steps": 532,
+  "timestamp": "2025-08-10T21:21:09.050385"
+}
