@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DQN_Architecture_Detailed.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="dqn-architecture--detailed-technical-overview-%F0%9F%93%98">DQN Architecture — Detailed Technical Overview 📘</h1>
+<p><strong>File:</strong> <code>reports/DQN_Architecture_Detailed.md</code>
+<strong>Generated:</strong> 2026-01-06</p>
+<hr>
+<h2 id="contents">Contents</h2>
+<ol>
+<li>Overview</li>
+<li>High-level component diagram (Mermaid)</li>
+<li>Data pipeline &amp; feature engineering</li>
+<li>Environment design (state, action, reward)</li>
+<li>Agent design and neural network architecture</li>
+<li>Training algorithm and schedules</li>
+<li>Experience replay and memory</li>
+<li>Model persistence, logging, and checkpoints</li>
+<li>Validation and evaluation</li>
+<li>Implementation notes &amp; code references</li>
+<li>Reproducibility and recommended experiments</li>
+<li>Appendix: hyperparameters and formulas</li>
+</ol>
+<hr>
+<h2 id="1-overview">1. Overview</h2>
+<p>This document provides a comprehensive, research-grade description of the DQN-based trading system implemented in the repository. It covers the data pipeline, feature engineering, environment dynamics, reward design, agent neural architecture, training loop and optimizers, and evaluation procedures. All references to code are to the files in <code>src/</code> (e.g., <code>dqn_model.py</code>, <code>training.py</code>, <code>trading_environment.py</code>, <code>technical_indicators.py</code>, <code>validation.py</code>). Use this as a source for methods, equations, and reproduction steps.</p>
+<hr>
+<h2 id="2-high-level-component-diagram-mermaid">2. High-level component diagram (Mermaid)</h2>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TD
+  subgraph Data
+    A[CSV files: data/*_daily.csv] --> B[Load & Clean]
+    B --> C[Technical Indicators]
+    C --> D[Feature Selection & Normalization]
+  end
+
+  subgraph Train
+    D --> E[Environment: StockTradingEnvironment]
+    E -->|state| F[DQN Agent]
+    F -->|action| E
+    E -->|experience| G[Replay Buffer]
+    F -->|train step| H[Optimizer / Q-network]
+    H --> F
+    H --> I[Target network update]
+    H --> J[Checkpoint and Save model]
+  end
+
+  subgraph Validate
+    D --> K[Validation split]
+    K --> L[Backtest Environment]
+    F -->|policy: greedy| L
+    L --> M[Metrics and Reports]
+  end
+
+  style Data fill:#f9f,stroke:#333,stroke-width:1px
+  style Train fill:#ffefe6,stroke:#333,stroke-width:1px
+  style Validate fill:#e6f7ff,stroke:#333,stroke-width:1px
+</div></code></pre>
+<blockquote>
+<p>Diagram notes: The mermaid diagram above depicts the processing and control flow: CSV data → features → normalized dataset. During training, the environment and agent interact (state→action→next_state), episodes produce experiences stored in the replay buffer, and the agent performs periodic learning updates using mini-batches sampled from memory. During validation, the model runs deterministically (greedy policy) on held-out data to produce backtest metrics.</p>
+</blockquote>
+<hr>
+<h2 id="3-data-pipeline--feature-engineering-%F0%9F%94%AC">3. Data Pipeline &amp; Feature Engineering 🔬</h2>
+<h3 id="31-raw-data-and-format">3.1 Raw data and format</h3>
+<ul>
+<li>Input: CSV files per symbol in <code>data/</code> (e.g., <code>AMZN_daily.csv</code>). Expected columns after initial cleaning: <code>date, close, high, low, open, volume</code>.</li>
+<li><code>ModelTrainer.load_csv_data()</code> performs robust parsing: it locates the first valid date row, coerces numeric columns, enforces non-negative prices/volume, sorts by date index.</li>
+</ul>
+<h3 id="32-feature-computation-see-technicalindicators">3.2 Feature computation (see <code>TechnicalIndicators</code>)</h3>
+<ul>
+<li>Implemented indicators (non-exhaustive): SMAs (5,10,20,50,100), EMAs, RSI (14,30), MACD (macd, signal, hist), Stochastic K/D, Williams %R, Bollinger Bands (upper/mid/lower), BB width/position/%B, ATR/NATR, OBV, AD, ADOSC, VWAP (cumulative approx), price change features (1d,5d,10d,30d), volatility (rolling std), ADX, CCI, candle patterns (Doji, Hammer), gap indicator, support/resistance distance.</li>
+<li>Implementation details: uses TA-Lib for many indicators; uses rolling windows and cummulative operations for VWAP.</li>
+</ul>
+<h3 id="33-feature-selection-and-cleaning">3.3 Feature selection and cleaning</h3>
+<ul>
+<li><code>TechnicalIndicators.get_feature_columns()</code> enumerates features; <code>prepare_features_for_model()</code> filters available ones, replaces infinities with 0, and fills NaNs.</li>
+<li>Final feature matrix: typically 54 market features (varies if some indicators are missing) + 5 portfolio features appended during environment observation → total <code>state_dim</code> = 59 in pipeline.</li>
+</ul>
+<h3 id="34-normalization">3.4 Normalization</h3>
+<ul>
+<li><code>MinMaxScaler</code> from scikit-learn is used in <code>ModelTrainer</code>.</li>
+<li>Important current behavior: validation sometimes calls <code>normalize_data(..., fit_scaler=True)</code> on test data — this causes normalization leakage. It is recommended to persist the scaler fitted on training data and use it for validation/test.</li>
+</ul>
+<hr>
+<h2 id="4-environment-design-state-action-reward-%F0%9F%8F%9B%EF%B8%8F">4. Environment Design (State, Action, Reward) 🏛️</h2>
+<h3 id="41-state-observation-space">4.1 State (Observation) space</h3>
+<ul>
+<li>Market features: vector of selected technical indicators and raw OHLCV. For step t, the market vector is the feature row at t.</li>
+<li>Portfolio features appended and normalized:
+<ul>
+<li>Normalized balance = balance / initial_balance</li>
+<li>Normalized shares = shares_held / max_shares</li>
+<li>Normalized net_worth = net_worth / initial_balance</li>
+<li>Normalized position_value = shares_held * price / initial_balance</li>
+<li>Portfolio return = (net_worth - initial_balance) / initial_balance</li>
+</ul>
+</li>
+<li>Final observation is a 1D numpy float32 array (<code>shape=(state_dim,)</code>). <code>StockTradingEnvironment._get_observation()</code> ensures finite numbers via <code>np.nan_to_num()</code>.</li>
+</ul>
+<h3 id="42-action-space">4.2 Action space</h3>
+<ul>
+<li>Discrete(3): {0: HOLD, 1: BUY, 2: SELL}.</li>
+<li>Implementation specifics:
+<ul>
+<li><strong>Buy</strong>: buy as many shares as possible from available balance, adjusted for transaction cost and capped at a position size limit (10% of initial balance per buy by default). The code returns <code>(shares_to_buy, total_cost)</code>.</li>
+<li><strong>Sell</strong>: sell entire position (liquidate all shares held) and compute reward depending on realized profit vs average buy price.</li>
+</ul>
+</li>
+<li>Limitations: Only full liquidation sells; no partial sizing actions. This simplifies action set but reduces expressiveness.</li>
+</ul>
+<h3 id="43-reward-function-design">4.3 Reward function design</h3>
+<p>Implemented in <code>StockTradingEnvironment.step()</code> and helper methods:</p>
+<ul>
+<li>Immediate trade bonuses/penalties:
+<ul>
+<li>Buy: +0.01 reward (encourages entry)</li>
+<li>Sell: +0.02 if selling profitably (based on average buy price), -0.01 if selling at a loss</li>
+<li>Action penalty: −0.01 for any non-hold action (discourage excessive trading)</li>
+<li>New maximum net-worth bonus: +0.05 the first time a new max is achieved in the episode</li>
+</ul>
+</li>
+<li>Portfolio change component:
+<ul>
+<li>reward += portfolio_return * 10 where portfolio_return = (net_worth - previous_net_worth) / previous_net_worth. This amplifies portfolio changes (realized or unrealized) and provides dense feedback.</li>
+</ul>
+</li>
+<li>Design rationale: combining event-based rewards with continuous portfolio feedback encourages both profitable trades and good risk-adjusted accumulation of wealth. However, mixing realized/unrealized PnL in the reward can bias the agent toward short-term fluctuations; separating realized and unrealized parts for reward/auxiliary feedback is recommended for analysis and stability.</li>
+</ul>
+<hr>
+<h2 id="5-agent-design--neural-network-architecture-%F0%9F%A7%A0">5. Agent Design &amp; Neural Network Architecture 🧠</h2>
+<h3 id="51-agent-api">5.1 Agent API</h3>
+<ul>
+<li>Class: <code>DQNAgent</code> (<code>src/dqn_model.py</code>)</li>
+<li>Key public methods:
+<ul>
+<li><code>act(state, training=True)</code> → returns action (int). During training it is epsilon-greedy; during evaluation set <code>training=False</code> to use greedy policy (argmax of Q-values).</li>
+<li><code>remember(state, action, reward, next_state, done)</code> → stores experience in replay memory</li>
+<li><code>replay()</code> → sample mini-batch and perform gradient step</li>
+<li><code>update_target_network()</code> → copy weights from Q-network to target network</li>
+<li><code>save_model(filepath)</code> / <code>load_model(filepath)</code> → serialize model state + optimizer + epsilon and training_losses</li>
+</ul>
+</li>
+</ul>
+<h3 id="52-neural-network-architecture">5.2 Neural network architecture</h3>
+<ul>
+<li>Implementation: <code>DQNAgent._build_network()</code> returns an <code>nn.Sequential</code> network:
+<ul>
+<li>Input layer → Linear(state_dim → 1024)</li>
+<li>LayerNorm(1024) → ReLU → Dropout(0.2)</li>
+<li>Linear(1024 → 512) → LayerNorm(512) → ReLU → Dropout(0.15)</li>
+<li>Linear(512 → 256) → LayerNorm(256) → ReLU → Dropout(0.1)</li>
+<li>Linear(256 → 128) → LayerNorm(128) → ReLU → Dropout(0.05)</li>
+<li>Linear(128 → 64) → ReLU</li>
+<li>Output layer: Linear(64 → action_dim=3)</li>
+</ul>
+</li>
+<li>Regularization &amp; concerns:
+<ul>
+<li>Layer normalization stabilizes learning across large batch sizes and prevents covariate shift inside mini-batches.</li>
+<li>Dropout is used between layers to reduce overfitting. Note: dropout during training but not during evaluation.</li>
+<li>Final Q-values are unbounded real numbers — no activation on output.</li>
+</ul>
+</li>
+</ul>
+<h3 id="53-loss-and-optimizer">5.3 Loss and optimizer</h3>
+<ul>
+<li>Loss: MSE between current Q(s,a) and target Q-value (TD target). Implementation uses <code>F.mse_loss(current_q_values, target_q_values)</code>.</li>
+<li>Target value (Double DQN):
+<ul>
+<li>next_actions = argmax_a Q_online(next_state, a)</li>
+<li>next_q_values = Q_target(next_state, next_actions)</li>
+<li>target = reward + gamma * next_q_values * (1 - done)</li>
+</ul>
+</li>
+<li>Optimizer: <code>optim.Adam</code> with a small weight decay (L2) and gradient clipping (<code>clip_grad_norm_</code> with max_norm = 1.0).</li>
+</ul>
+<h3 id="54-exploration-policy">5.4 Exploration policy</h3>
+<ul>
+<li>Epsilon-greedy with decay:
+<ul>
+<li>Start: ε = 1.0 (in agent constructor)</li>
+<li>Per-replay step decay: agent multiplies ε by <code>epsilon_decay</code> until <code>epsilon_min</code> (defaults: decay = 0.995 in agent, trainer sets 0.999 externally; min=0.01)</li>
+</ul>
+</li>
+<li>Notes: A slower decay (e.g., 0.999) keeps exploration longer; per-step vs per-episode decay choices affect sample efficiency.</li>
+</ul>
+<h3 id="55-device--compute">5.5 Device &amp; compute</h3>
+<ul>
+<li>GPU-aware: <code>DQNAgent</code> moves network and tensors to CUDA device if available (<code>use_gpu=True</code>) and adjusts batch sizes and memory sizes accordingly (e.g., batch_size=512 for GPU, memory_size=40000).</li>
+</ul>
+<hr>
+<h2 id="6-training-algorithm--schedules-%F0%9F%94%81">6. Training Algorithm &amp; Schedules 🔁</h2>
+<h3 id="61-overall-training-flow-per-modeltrainertrainmodel">6.1 Overall training flow (per <code>ModelTrainer.train_model()</code>)</h3>
+<ul>
+<li>Prepare dataset → normalize (fitted on training set) → build env + agent → run episodes.</li>
+<li>For each episode:
+<ul>
+<li>Reset environment</li>
+<li>Loop over steps until <code>done</code> (episode lasts full dataset length):
+<ul>
+<li>action = agent.act(state, training=True)</li>
+<li>next_state, reward, done, info = env.step(action)</li>
+<li>agent.remember(...)</li>
+<li>If memory sufficiently large, call <code>agent.replay()</code> multiple times (up to 3 replays per step to accelerate learning)</li>
+</ul>
+</li>
+<li>Periodically (every save_freq), save checkpoint; if episode reward &gt; best reward then save best model</li>
+<li>Every 10 episodes call <code>agent.update_target_network()</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="62-key-hyperparameters-and-values-present-in-repo">6.2 Key hyperparameters and values present in repo</h3>
+<ul>
+<li>Learning rate: 1e-4 (Adam)</li>
+<li>Discount factor γ: 0.99</li>
+<li>Epsilon decay: 0.999 (trainer), epsilon_min: 0.01</li>
+<li>Batch size: 512 if GPU else 128</li>
+<li>Replay memory: 40000 if GPU else 20000</li>
+<li>Replay per step: up to 3 replays per step once memory &gt; batch_size</li>
+<li>Target update frequency: every 10 episodes</li>
+<li>Episode length: one pass through the normalized dataset (episode length = #rows - 1)</li>
+</ul>
+<h3 id="63-practical-considerations">6.3 Practical considerations</h3>
+<ul>
+<li>Replaying multiple batches per step speeds up learning but can cause overfitting to recent experiences; consider tuning replay-per-step count.</li>
+<li>The code uses MSE loss on single-step TD-targets; using Huber loss (smooth L1) is often more robust to outliers and noisy financial rewards.</li>
+</ul>
+<hr>
+<h2 id="7-experience-replay--memory-%F0%9F%A7%BE">7. Experience Replay &amp; Memory 🧾</h2>
+<h3 id="71-buffer">7.1 Buffer</h3>
+<ul>
+<li>Memory implemented as a Python list with thread lock for safe concurrent access, fixed capacity (pop oldest when capacity reached).</li>
+<li>Stored tuple: (state, action, reward, next_state, done)</li>
+</ul>
+<h3 id="72-sampling-and-gpu-preparation">7.2 Sampling and GPU preparation</h3>
+<ul>
+<li>Batch sampling uses NumPy RNG (<code>np.random.default_rng(seed=42)</code>) for reproducibility.</li>
+<li>Batches converted to tensors and moved to device; states stacked into FloatTensor of shape (batch_size, state_dim).</li>
+</ul>
+<h3 id="73-possible-extensions">7.3 Possible extensions</h3>
+<ul>
+<li><strong>Prioritized Experience Replay (PER)</strong> to bias sampling toward unexpected transitions (higher TD-error). Recommended for non-stationary reward distributions.</li>
+<li><strong>N-step returns</strong> to improve credit assignment for delayed rewards in trading episodes.</li>
+<li><strong>On-policy mixing</strong> or importance sampling corrections if integrating prioritized replay.</li>
+</ul>
+<hr>
+<h2 id="8-model-persistence-logging-and-checkpoints-%F0%9F%92%BE">8. Model Persistence, Logging, and Checkpoints 💾</h2>
+<ul>
+<li>Model save format: <code>torch.save()</code> dictionary with:
+<ul>
+<li>q_network state dict, target network state dict, optimizer state dict, epsilon, training_losses and hyperparameters</li>
+</ul>
+</li>
+<li>Metadata JSON saved alongside <code>.pth</code> with symbol, episode, timestamp, state_dim, action_dim, epsilon and summary stats.</li>
+<li>Training history (episode rewards, profits, trades) saved to <code>logs/{symbol}_training_history_{timestamp}.json</code>.</li>
+<li>Validation saves backtest results to <code>validation_logs/backtest_{symbol}_{timestamp}.json</code> and can generate a <code>validation_report_{symbol}_{timestamp}.md</code>.</li>
+</ul>
+<hr>
+<h2 id="9-validation--evaluation-protocol-%F0%9F%A7%AA">9. Validation &amp; Evaluation Protocol 🧪</h2>
+<h3 id="91-backtest-protocol">9.1 Backtest protocol</h3>
+<ul>
+<li>Use held-out portion (by default <code>test_split=0.2</code>) of prepared dataset for validation.</li>
+<li>Normalize test data with training-fitted scaler (recommended) then run environment deterministically with <code>agent.act(state, training=False)</code>.</li>
+<li>Compute metrics: total return, annualized return, Sharpe, max drawdown, volatility, total trades, win rate, action distribution, final balance.</li>
+</ul>
+<h3 id="92-walk-forward--model-comparison">9.2 Walk-forward &amp; model comparison</h3>
+<ul>
+<li>Walk-forward: sliding windows (<code>window_size</code> default 252 days, <code>step_size</code> 21) are analyzed to estimate robustness across time.</li>
+<li>Compare <code>best</code> vs <code>final</code> checkpoints using <code>compare_models()</code> method, using total_return as primary ranking.</li>
+</ul>
+<hr>
+<h2 id="10-implementation-notes--code-references-%F0%9F%94%8E">10. Implementation Notes &amp; Code References 🔎</h2>
+<ul>
+<li>DQN Agent: <code>src/dqn_model.py</code> — architecture, replay, act/replay/save/load</li>
+<li>Trainer: <code>src/training.py</code> — data loading, training loop, saving models/histories</li>
+<li>Environment: <code>src/trading_environment.py</code> — observation, action exec, reward shaping, metrics</li>
+<li>Features: <code>src/technical_indicators.py</code> — all indicator calculations &amp; feature list</li>
+<li>Validation: <code>src/validation.py</code> — backtest, walk-forward, comparison, report generation</li>
+<li>CLI &amp; orchestration: <code>src/main.py</code></li>
+</ul>
+<hr>
+<h2 id="11-reproducibility-experiments--suggested-ablations-%E2%9A%96%EF%B8%8F">11. Reproducibility, Experiments &amp; Suggested Ablations ⚖️</h2>
+<h3 id="111-reproducibility-checklist">11.1 Reproducibility checklist</h3>
+<ul>
+<li>Fix random seeds consistently: NumPy RNG seed (already used in DQNAgent), PyTorch seed, and any system-level randomness.</li>
+<li>Persist scaler, model metadata (hyperparameters &amp; seed), training history, and artifacts for each run.</li>
+<li>Store training logs and plotting figures for reproducibility and result auditing.</li>
+</ul>
+<h3 id="112-suggested-experiments-and-ablations-for-research">11.2 Suggested experiments and ablations for research</h3>
+<ul>
+<li>Baseline comparisons: Random policy, Buy-and-hold, Momentum rule-based strategies, Supervised policy (predict next-day direction), DQN</li>
+<li>Ablate reward terms: train with/without action bonuses, with realized PnL only, with portfolio_return scaled differently</li>
+<li>Vary network size and regularization (LayerNorm vs BatchNorm, dropout rates)</li>
+<li>Try variants: Dueling-DQN, Double-DQN (already included), PER, n-step returns, categorical/distributional RL (C51, QR-DQN)</li>
+<li>Compare discrete-action (current) vs continuous/parameterized actions (actor-critic with continuous action representing trade size)</li>
+<li>Use walk-forward cross-validation to test generalization across market regimes</li>
+</ul>
+<hr>
+<h2 id="12-appendix-hyperparameters-formulas-and-metrics-%F0%9F%93%90">12. Appendix: hyperparameters, formulas and metrics 📐</h2>
+<h3 id="121-core-hyperparameters-from-repo">12.1 Core hyperparameters (from repo)</h3>
+<ul>
+<li>lr = 1e-4, gamma = 0.99, epsilon_decay ≈ 0.999, epsilon_min = 0.01</li>
+<li>batch_size = 512 (GPU) / 128 (CPU), memory_size = 40000 (GPU) / 20000 (CPU)</li>
+<li>replay_per_step = up to 3</li>
+<li>target_update_freq = 10 episodes</li>
+</ul>
+<h3 id="122-key-formulas">12.2 Key formulas</h3>
+<ul>
+<li>
+<p>TD target (Double DQN):</p>
+<ul>
+<li>a* = argmax_a Q_online(next_state, a)</li>
+<li>y = reward + γ * Q_target(next_state, a*) * (1 - done)</li>
+<li>Loss = MSE(Q_online(state, action), y)</li>
+</ul>
+</li>
+<li>
+<p>Sharpe ratio (daily -&gt; annualized approximation):</p>
+<ul>
+<li>sr = mean(excess_returns) / std(excess_returns) * sqrt(252)</li>
+<li>excess_returns = daily_returns - (risk_free_rate / 252)</li>
+</ul>
+</li>
+<li>
+<p>Max drawdown: iteratively compute peak and drawdown = (peak - value) / peak, take max</p>
+</li>
+</ul>
+<hr>
+<h2 id="closing-notes">Closing notes</h2>
+<p>This document is intended to be a thorough, citable, technical reference for the DQN trading system in this repository. If you want, I can also:</p>
+<ul>
+<li>Generate variant diagrams (sequence diagrams, detailed architecture UML, PNG exports)</li>
+<li>Create an abridged one-page architecture figure or LaTeX-compatible description for your paper</li>
+<li>Implement a canonical experiment script that trains, evaluates, and outputs a reproducibility artifact (scaler + seed + checkpoints)</li>
+</ul>
+<p>If you'd like any section expanded (mathematical derivations, pseudocode, or additional diagrams), tell me which parts to prioritize and I'll produce them next.</p>
+
+</body>
+</html>
