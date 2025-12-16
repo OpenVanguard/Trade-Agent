@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>DQN_Project_Report.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="deep-q-learning-dqn-stock-trading-project--detailed-report-%E2%9C%85">Deep Q-Learning (DQN) Stock Trading Project — Detailed Report ✅</h1>
+<p><strong>Generated:</strong> 2026-01-06</p>
+<hr>
+<h2 id="1-executive-summary-%F0%9F%92%A1">1. Executive Summary 💡</h2>
+<p>This project implements a Deep Q-Learning (DQN) system to trade equities using historical daily CSV data. The pipeline loads CSV price data, computes extensive technical indicators (TA-Lib), constructs an environment that simulates trading with transaction costs and position limits, and trains a Deep Q-Network agent to learn a buy/hold/sell policy via experience replay and target network updates.</p>
+<p>Key facts:</p>
+<ul>
+<li>Training has been done on daily data only (not intraday).</li>
+<li>Observations include price + technical indicators (54 features) plus 5 normalized portfolio features → total state dimension = 59.</li>
+<li>Action space: discrete {0: HOLD, 1: BUY, 2: SELL}.</li>
+</ul>
+<hr>
+<h2 id="2-data--features-%F0%9F%94%A7">2. Data &amp; Features 🔧</h2>
+<ul>
+<li>Source files: <code>data/SYMBOL_daily.csv</code> (e.g. <code>AMZN_daily.csv</code>, <code>AAPL_daily.csv</code>).</li>
+<li>Data cleaning: removes rows with non-positive or NaN prices and volume; metadata logs removed rows.</li>
+<li>Indicators: wide set computed using TA-Lib and custom logic (SMA, EMA, RSI, MACD, STOCH, Bollinger bands, ATR, NATR, OBV, VWAP approx, candle patterns, multi-horizon returns, etc.).</li>
+<li>Feature count: 54 market features (see <code>TechnicalIndicators.get_feature_columns()</code>), plus normalized portfolio fields (balance, shares, net_worth, position_value, portfolio_return) → observation vector length 59.</li>
+<li>Normalization: <code>MinMaxScaler</code> is used; note: currently the code sometimes fits scaler on test data during validation (<code>fit_scaler=True</code>) — this risks leaking test information (see Recommendations).</li>
+</ul>
+<hr>
+<h2 id="3-environment--reward-design-%F0%9F%8E%AF">3. Environment &amp; Reward Design 🎯</h2>
+<p>File: <code>src/trading_environment.py</code></p>
+<ul>
+<li>
+<p>Portfolio simulation: initial balance (default $10,000), transaction cost (default 0.1%), position sizing limit (max 10% of initial balance per buy), max_shares parameter.</p>
+</li>
+<li>
+<p>Actions: Hold/Buy/Sell. Buy executes affordable shares capped by position limits; Sell liquidates all shares held.</p>
+</li>
+<li>
+<p>Reward shaping (per step):</p>
+<ul>
+<li>Small buy bonus: +0.01 when a buy occurs</li>
+<li>Sell reward: +0.02 if sell results in profit (based on average buy price), -0.01 when selling at loss</li>
+<li>Scaled portfolio change: reward += portfolio_return * 10 (captures realized + unrealized PnL)</li>
+<li>Trading penalty: -0.01 for any trade (discourage excessive trading)</li>
+<li>New high net worth bonus: +0.05 when net worth exceeds prior max</li>
+</ul>
+</li>
+<li>
+<p>Performance metrics tracked: total_return, win_rate, max_drawdown, Sharpe ratio (daily), volatility, total_trades.</p>
+</li>
+</ul>
+<hr>
+<h2 id="4-dqn-agent-architecture--algorithms-%F0%9F%A7%A0">4. DQN Agent Architecture &amp; Algorithms 🧠</h2>
+<p>File: <code>src/dqn_model.py</code></p>
+<ul>
+<li>
+<p>Network architecture (default):</p>
+<ul>
+<li>Input: state_dim (59)</li>
+<li>Dense 1024 → LayerNorm → ReLU → Dropout(0.2)</li>
+<li>Dense 512 → LayerNorm → ReLU → Dropout(0.15)</li>
+<li>Dense 256 → LayerNorm → ReLU → Dropout(0.1)</li>
+<li>Dense 128 → LayerNorm → ReLU → Dropout(0.05)</li>
+<li>Dense 64 → ReLU</li>
+<li>Output: action_dim (3 Q-values)</li>
+</ul>
+</li>
+<li>
+<p>Algorithmic choices:</p>
+<ul>
+<li>Epsilon-greedy exploration (ε start=1.0, decay applied per replay; trainer config uses ε decay 0.999 and ε_min 0.01).</li>
+<li>Double-DQN style target estimation: next-actions selected by online network, target values from target network.</li>
+<li>Target network updated periodically (<code>agent.update_target_network()</code>), default every 10 episodes in training.</li>
+<li>Experience replay buffer with thread-safe access; batch-based training on GPU when available.</li>
+<li>Optimization: Adam with weight decay, gradient clipping (max_norm=1.0), MSE loss on Q-values.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="5-training-loop--hyperparameters-%E2%9A%99%EF%B8%8F">5. Training Loop &amp; Hyperparameters ⚙️</h2>
+<p>File: <code>src/training.py</code></p>
+<ul>
+<li>High-level process:
+<ul>
+<li>Prepare features (indicators) → normalize (MinMaxScaler) → create <code>StockTradingEnvironment</code> → instantiate <code>DQNAgent</code></li>
+<li>Episodes (default 1000), each episode runs through dataset once as an episode.</li>
+<li>Per step: agent acts, environment steps, experience stored, and learning occurs repeatedly (the code replays multiple mini-batches per step to accelerate convergence).</li>
+<li>Save best models and periodic checkpoints (every <code>save_freq</code> episodes).</li>
+</ul>
+</li>
+<li>Notable hyperparameters:
+<ul>
+<li>Learning rate: 1e-4</li>
+<li>Gamma (discount): 0.99 (passed from trainer)</li>
+<li>Epsilon decay: 0.999, min 0.01</li>
+<li>Batch size: 512 (if GPU) else 128</li>
+<li>Replay memory: 40k (GPU) else 20k</li>
+<li>Replay frequency: replay called per step and up to 3 replays per step when memory sufficient</li>
+<li>Target network update: every 10 episodes</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="6-validation--backtesting-%F0%9F%94%8D">6. Validation &amp; Backtesting 🔍</h2>
+<p>File: <code>src/validation.py</code></p>
+<ul>
+<li>
+<p>Backtest procedure:</p>
+<ul>
+<li>Load best or specified model → re-run environment on last 20% (default) of prepared data</li>
+<li>Normalize test portion (currently often fit on test data) — caution: this may leak information, see Recommendations.</li>
+<li>Record actions, portfolio evolution; compute metrics (final balance, total return, Sharpe, max drawdown, win rate, trade counts)</li>
+<li>Save a JSON backtest summary to <code>validation_logs/backtest_SYMBOL_TIMESTAMP.json</code></li>
+</ul>
+</li>
+<li>
+<p>Additional utilities: walk-forward analysis, model comparison (best vs final), automated report creation.</p>
+</li>
+</ul>
+<hr>
+<h2 id="7-results--observations-from-repository-artifacts-%F0%9F%93%88">7. Results &amp; Observations (from repository artifacts) 📈</h2>
+<ul>
+<li>The repo contains many saved models and training histories (e.g., <code>models/AMZN_*</code>, <code>logs/*_training_history_*.json</code>) indicating multiple training runs and saved checkpoints.</li>
+<li>README suggests example backtest numbers (illustrative): AMZN daily: total return ~907% (final balance ~$100k), Sharpe ~1.25 — these figures appear to be demonstrative benchmarks in README and may not be reproducible without the exact model and dataset splits.</li>
+</ul>
+<p>Observations and likely behaviors:</p>
+<ul>
+<li>Reward shaping mixes realized + unrealized returns with small action bonuses/penalties; this can encourage both capturing positive drift and avoiding churn.</li>
+<li>Large network capacity and aggressive replay (multi-replay per step) can lead to fast convergence, but also risks overfitting on limited daily data.</li>
+<li>Training on daily data only reduces sample frequency; model may underperform on intraday regimes if ported directly.</li>
+</ul>
+<hr>
+<h2 id="8-strengths--current-limitations-%E2%9A%96%EF%B8%8F">8. Strengths &amp; Current Limitations ⚖️</h2>
+<p>Strengths:</p>
+<ul>
+<li>Comprehensive feature set (wide technical indicators).</li>
+<li>Realistic environment with transaction costs and position limits.</li>
+<li>GPU-aware training and careful implementation details (Double DQN, LayerNorm, gradient clipping).</li>
+<li>Solid logging, model checkpointing and validation/backtest utilities.</li>
+</ul>
+<p>Limitations:</p>
+<ul>
+<li>Training only on daily data (no intraday models trained yet).</li>
+<li>Potential data leakage: scaler fitting on test in some validation paths (should use training-fitted scaler).</li>
+<li>Sell action liquidates entire position (no partial sizing or continuous position size decisions).</li>
+<li>Reward uses portfolio_return scaling (fast feedback) but may conflate realized vs unrealized PnL.</li>
+<li>No explicit modeling of slippage or realistic commission beyond a fixed transaction_cost.</li>
+</ul>
+<hr>
+<h2 id="9-recommendations--future-enhancements-%F0%9F%9A%80">9. Recommendations &amp; Future Enhancements 🚀</h2>
+<p>Immediate fixes:</p>
+<ol>
+<li>Persist and load the scaler used in training; <strong>do not</strong> fit scaler on test data. Use the training-fitted scaler for validation and backtests.</li>
+<li>Split normalization/feature pipeline so that <code>train</code> saves scaler to <code>models/</code> and <code>validate</code> loads it.</li>
+<li>Log realized vs unrealized PnL separately and report both in backtests.</li>
+</ol>
+<p>Algorithmic / Architecture improvements:</p>
+<ul>
+<li>Try Dueling DQN and Prioritized Experience Replay to improve sample efficiency.</li>
+<li>Consider distributional RL or multi-step returns (n-step targets) for stability in financial signals.</li>
+<li>Explore actor-critic (PPO/A2C) or parameterized action spaces for position sizing instead of discrete all-in/all-out trades.</li>
+<li>Add action that allows partial sells/buys or continuous fraction-sizing (or discretize sizes e.g., buy 10%, 20% etc.).</li>
+</ul>
+<p>Risk &amp; robustness:</p>
+<ul>
+<li>Add slippage modeling and variable commission per trade (simulate more conservative returns).</li>
+<li>Implement early stopping criteria or evaluation holdout and cross-validation via walk-forward to reduce overfitting.</li>
+<li>Add seed control and deterministic training logging for reproducibility.</li>
+</ul>
+<p>Monitoring &amp; evaluation:</p>
+<ul>
+<li>Persist training histories, model hyperparameters, and randomness seeds in a reproducible artifact (e.g., <code>models/{symbol}_metadata.json</code>).</li>
+<li>Add more evaluation metrics: realized PnL, profit factor, tail-risk measures, drawdown duration, trade duration distributions.</li>
+</ul>
+<p>Operational:</p>
+<ul>
+<li>Train and validate intraday models with appropriately downsampled features (or use intraday features) if intraday trading is desired.</li>
+<li>Add a simple CLI parameter to run validations with more realistic cost assumptions (slippage bps, fixed commission).</li>
+</ul>
+<hr>
+<h2 id="10-reproducibility--how-to-run-%F0%9F%A7%AD">10. Reproducibility &amp; How to Run 🧭</h2>
+<ul>
+<li>Train (daily):
+<ul>
+<li>python src/main.py train --symbol AMZN --episodes 1000 --freq daily</li>
+</ul>
+</li>
+<li>Validate (use best model):
+<ul>
+<li>python src/main.py validate --symbol AMZN</li>
+</ul>
+</li>
+<li>Validate with explicit model:
+<ul>
+<li>python src/main.py validate --symbol AMZN --model-path models/AMZN_best_episode_912.pth</li>
+</ul>
+</li>
+<li>Plot training progress:
+<ul>
+<li>Training automatically saves <code>logs/{SYMBOL}_training_history_*.json</code> and the trainer can plot them.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="11-where-to-look-in-the-codebase-%F0%9F%94%8E">11. Where to look in the codebase 🔎</h2>
+<ul>
+<li>Model: <code>src/dqn_model.py</code></li>
+<li>Environment: <code>src/trading_environment.py</code></li>
+<li>Training loop: <code>src/training.py</code></li>
+<li>Indicators &amp; features: <code>src/technical_indicators.py</code></li>
+<li>Validation/backtesting: <code>src/validation.py</code></li>
+<li>Entrypoint CLI: <code>src/main.py</code></li>
+</ul>
+<hr>
+<h2 id="12-short-summary-%E2%9C%85">12. Short Summary ✅</h2>
+<p>This repo implements a production-grade DQN trading pipeline for daily equities with an extensive technical feature set and careful environment modeling. The system is flexible and GPU-aware, but improvements are advised around data pipeline reproducibility (scaler persistence), reward clarity (realized vs unrealized), and enhanced RL algorithms or action representations to allow partial position sizing and better generalization.</p>
+<hr>
+<p>If you'd like, I can:</p>
+<ul>
+<li>Generate a short results-focused executive report only, or</li>
+<li>Implement the recommended scaler save/load fix and run a validation (requires your consent to run training/validation locally).</li>
+</ul>
+
+</body>
+</html>
