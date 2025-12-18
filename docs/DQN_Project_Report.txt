@@ -1,0 +1,58 @@
+DQN Stock Trading Project — Detailed Report
+Generated: 2026-01-06
+
+1) Executive Summary
+- Implementation: Deep Q-Learning (DQN) trading agent trained on daily CSV data.
+- State: 54 market indicators + 5 portfolio features = 59 inputs.
+- Actions: 3 discrete actions (HOLD, BUY, SELL).
+
+2) Data & Features
+- Source: data/SYMBOL_daily.csv
+- Cleaning: removes non-positive/NaN values; calculates technical indicators with TA-Lib.
+- Normalization: MinMaxScaler used. Note: validation sometimes fits scaler on test data (potential leakage).
+
+3) Environment & Reward
+- Portfolio sim: initial balance (10k default), transaction cost 0.001, position size limited to ~10% per buy.
+- Reward: buy bonus (+0.01), sell profit reward (+0.02) or loss (-0.01), scaled portfolio change (portfolio_return * 10), trade penalty (-0.01), hit new max net worth bonus (+0.05).
+
+4) Agent & Architecture
+- Network layers: 1024 -> 512 -> 256 -> 128 -> 64 -> 3 (actions), with LayerNorm, ReLU, dropout.
+- Double-DQN logic: next-action by online network, value by target network.
+- Epsilon-greedy exploration, Adam optimizer, gradient clipping.
+
+5) Training Loop
+- Episodes default 1000; immediate learning per step; up to 3 replay iterations per step.
+- Hyperparams: lr=1e-4, gamma=0.99, epsilon decay=0.999, batch size=512 (GPU), memory ~40k (GPU).
+- Checkpointing: saves best model and periodic checkpoints.
+
+6) Validation & Backtest
+- Validates on last 20% of prepared data; computes total_return, Sharpe, max_drawdown, win_rate, trade stats.
+- Saves `validation_logs/backtest_SYMBOL_TIMESTAMP.json`.
+- Note: current validation code sometimes fits normalization on test data which should be changed.
+
+7) Results & Observations
+- Many saved checkpoints and training histories present in `models/` and `logs/`.
+- README contains example backtest numbers (illustrative), e.g., AMZN sample results.
+- Risk of overfitting due to limited daily samples and high-capacity network / aggressive replay.
+
+8) Recommendations
+- Persist and reuse training-fitted scaler for validation (avoid leakage).
+- Separate realized vs unrealized PnL in logs and metrics.
+- Consider Dueling DQN, Prioritized Replay, multi-step returns, or actor-critic for continuous sizing.
+- Model slippage and variable commission; allow partial/continuous position sizing and risk measures.
+
+9) Reproducibility & Commands
+- Train: python src/main.py train --symbol AMZN --episodes 1000
+- Validate: python src/main.py validate --symbol AMZN
+- Validate with model path: python src/main.py validate --symbol AMZN --model-path models/AMZN_best_episode_912.pth
+
+10) Files of interest
+- Agent: src/dqn_model.py
+- Env: src/trading_environment.py
+- Training: src/training.py
+- Validation: src/validation.py
+- Indicators: src/technical_indicators.py
+
+Summary: The project is feature-rich and well structured for experimentation with improvements around validation correctness, reward clarity, action expressiveness, and robustness to overfitting.
+
+Next step: I can implement the scaler persistence fix and update validation to use the training-fitted scaler if you want me to proceed.
